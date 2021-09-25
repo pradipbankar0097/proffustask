@@ -6,6 +6,20 @@ import Menu from './screens/Menu';
 import Categories from './screens/Categories';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firebase from 'firebase';
+import 'firebase/firestore';
+
+firebase.initializeApp({
+    apiKey: "AIzaSyCnfIXpbx0tioO5X0Q8XyCkQYrCWugSCPs",
+    authDomain: "proffustask.firebaseapp.com",
+    projectId: "proffustask",
+    storageBucket: "proffustask.appspot.com",
+    messagingSenderId: "825377877884",
+    appId: "1:825377877884:web:da7c21572e41db04047ef9",
+    measurementId: "G-NY98VMG81S"
+});
+
+export var db = firebase.firestore();
 
 function HomeScreen() {
   return (
@@ -22,9 +36,16 @@ export default function App() {
   return (
     <NavigationContainer>
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: "green",
-        inactiveTintColor: "gray",
+      screenOptions=
+      {{
+        "tabBarActiveTintColor": "green",
+        "tabBarInactiveTintColor": "gray",
+        "tabBarStyle": [
+          {
+            "display": "flex"
+          },
+          null
+        ]
       }}
     >
       <Tab.Screen name="Menu" component={Categories} options={{ headerShown:false, title:"Categories", tabBarIcon: ({ color, size }) => (

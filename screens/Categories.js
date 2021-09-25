@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
-import db from '../temp';
+import { db } from '../App';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,21 +14,37 @@ const Stack = createNativeStackNavigator();
 function Categories() {
 
     const [categoriesData, setCategoriesData] = useState([]);
-    // data retrieval from firebase
-    // dklds
-    useEffect(async () => {
-        const q = query(collection(db, "categories"),limit(21));
-        var i =0;
-        const querySnapshot = await getDocs(q);
+    useEffect(()=>{
+        async function fetchData() {
+
+            db.collection("categories").limit(21)
+    .get()
+    .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, " => ", doc.data());
-             console.log("\n"+i);i++;
-             setCategoriesData((prev) => {
+            //console.log(doc.id, " => ", doc.data());
+            setCategoriesData((prev) => {
                 return [...prev, doc.data()];
               });
         });
-    }, []);
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+
+
+
+        // const q = query(collection(db, "categories"),limit(21));
+        // var i =0;
+        // const querySnapshot = await getDocs(q);
+        // querySnapshot.forEach((doc) => {
+        //      setCategoriesData((prev) => {
+        //         return [...prev, doc.data()];
+        //       });
+        // });
+    }
+    fetchData();
+}, []);
     return (
         <Stack.Navigator
             screenOptions={{
